@@ -1,2 +1,3 @@
 # go_learn_doc
-go package record
+
+golang学习笔记，test文件可能运行不通，请另行赋值
