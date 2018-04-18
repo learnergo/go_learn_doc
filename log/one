@@ -38,7 +38,8 @@ func main() {
 
 --------------------------------------------------------
 
-对于log.Panic接口，该函数把日志内容刷到标准错误后调用 panic 函数，panic后的函数不会执行，跳转到defer（如果有的话），通常会在defer中定义recover
+对于log.Panic接口，该函数把日志内容刷到标准错误后调用 panic 函数，panic后的函数不会执行，跳转到defer（如果有的话），通常会在defer中定义recover,
+随后，程序崩溃并输出日志信息。日志信息包括panic value和函数调用的堆栈跟踪信息
 下面是一个Panic的示例：
 func test_deferpanic(){
 	defer func() {
