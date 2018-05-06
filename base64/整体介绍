@@ -1,51 +1,89 @@
 encoding/base64 定义了一个Encoding结构体，表示Base64的编/解码器。
 
-并且导出了四个常用的Encoding对象：StdEncoding、URLEncoding、RawStdEncoding、RawURLEncoding。
-	StdEncoding表示标准的编/解码器。
-	URLEncoding用于对URL编解码，编解码过程中会将Base64编码中的特殊标记+和/替换为-和_。
-	RawStdEncoding和RawURLEncoding是StdEncoding和URLEncoding的非padding版本。
-	
-主要API如下：
+并且定义了四个常用的Encoding对象：
 
+```
+- StdEncoding
+- URLEncoding
+- RawStdEncoding
+- RawURLEncoding
+```
+
+
+```
+- StdEncoding 表示标准的编/解码器。
+- URLEncoding 用于对URL编解码，编解码过程中会将Base64编码中的特殊标记+和/替换为-和_。
+- RawStdEncoding和RawURLEncoding是StdEncoding和URLEncoding的非padding版本。
+```
+
+	
+主要API：
+
+
+```
 //Encoding 生成器，可自定义编码集
 func NewEncoding(encoder string) *Encoding
+```
+
 
 //两个编码集，一个标准（std）一个URL
+
+```
 const encodeStd = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 const encodeURL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+```
 
+
+
+```
 // 四个定义的Encoding 
 var StdEncoding = NewEncoding(encodeStd)
 var URLEncoding = NewEncoding(encodeURL)
 var RawStdEncoding = StdEncoding.WithPadding(NoPadding)
 var RawURLEncoding = URLEncoding.WithPadding(NoPadding)
+```
 
 
 Encoding提供了如下编解码的方法:
 
- 解码:
+
+解码:
+```
 //[]byte版本将src解码为dest，返回成功写入的字节数和错误
 func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
 // string版本应用于字符串
 func (enc *Encoding) DecodeString(s string) ([]byte, error)
+```
+
 
 
  编码:
+
+```
 //[]byte版本将src编码为dest
 func (enc *Encoding) Encode(dst, src []byte)
 // string版本应用于字符串
 func (enc *Encoding) EncodeToString(src []byte) string
+```
+
 
 
 
  设置enc的padding，返回Encoding指针，NoPadding表示不进行padding操作
+
+```
 func (enc Encoding) WithPadding(padding rune) *Encoding
+```
 
 
 
- 另外 encoding/base64 还提供了流式操作的接口
+ 另外 encoding/base64 还提供了流式操作的接口（不做深入介绍）
+
+```
 func NewDecoder(enc *Encoding, r io.Reader) io.Reader
 func NewEncoder(enc *Encoding, w io.Writer) io.WriteCloser
+```
+
 
 
 

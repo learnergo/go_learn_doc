@@ -3,13 +3,17 @@
 
 最常见的一个参数是使用https的方式发送信息时候client端的设置。如果生成client的时候，什么信息都不添加，就会使用默认的值。具体的信息包括：
 
-	Transport RoundTripper
+	
+```
+Transport RoundTripper
 
-	CheckRedirect func(req *Request, via []*Request) error
+CheckRedirect func(req *Request, via []*Request) error
 
-	Jar CookieJar
+Jar CookieJar
 
-	Timeout time.Duration
+Timeout time.Duration
+```
+
 第一个参数是一个RoundTripper接口，里面包含了一个RoundTrip函数，指定了一些http请求的基本机制。
 http.Transport中涉及到的参数较多，要是不指定的话，就会使用默认的DefaultTransport参数，里面包含一些默认的请求时间以及proxy机制之类的。
 具体的细节参数涉及到好多，有的都没有使用到过比如那些我握手时间之类的，目前使用到的最多的就是https的相关参数：TLSClientConfig，
@@ -17,7 +21,9 @@ http.Transport中涉及到的参数较多，要是不指定的话，就会使用
 
 通常发送https请求的时候，前面的参数可以使用如下方式进行处理：
 
-pool := x509.NewCertPool()
+
+```
+    pool := x509.NewCertPool()
 	caCertPath := "certs/cert_server/ca.crt"
 
 	caCrt, err := ioutil.ReadFile(caCertPath)
@@ -40,6 +46,8 @@ pool := x509.NewCertPool()
 		},
 	}
 	client := &http.Client{Transport: tr}
+```
+
 	
 	
 	生成request时候的参数配置
@@ -52,10 +60,16 @@ pool := x509.NewCertPool()
 
 此外还可以给request的header中添加一些额外的信息，比如下面例子中添加了请求的body的类型以及token的信息。
 
+
+```
 reqest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 reqest.Header.Set("Authorization", "qwertyuiopasdfghjklzxcvbnm1234567890")
+```
+
 
 还有比如模拟表单提交，可以把提交的类型设置为url.Values类型再进行Encode：
+
+```
 // use map as struct
 	var clusterinfo = url.Values{}
 	//var clusterinfo = map[string]string{}
@@ -69,10 +83,16 @@ reqest.Header.Set("Authorization", "qwertyuiopasdfghjklzxcvbnm1234567890")
 	
 	url := "https://10.10.105.124:8443/user/checkAndUpdate"
 	reqest, err := http.NewRequest("POST", url, strings.NewReader(data))
+```
+
 	
 	最常见的一种情况是发送一个json文件过去，可以把Header的类型设置成为：
 
+
+```
 "Content-Type", "application/json; charset=utf-8"
+```
+
 其余的部分按照先前同样的方式进行设置发送提交就好。
 
 request的类型的属性还是比较多的，慢慢整理。

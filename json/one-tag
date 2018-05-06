@@ -1,15 +1,20 @@
-Golang解析JSON之Tag篇
+# Golang解析JSON之Tag篇
 
 大纲：
+```
 -正常序列化
 -自定义json字段名
 -omitempy 忽略零值或空值
 -序列化和反序列化，类型转变
+```
 
 
-1、
-struct正常序列化后，name值为字段名，如下
 
+##### 1、struct正常序列化后，name值为字段名
+如下
+
+
+```
 package main
 import (
     "encoding/json"
@@ -35,14 +40,21 @@ func main() {
     data, _ := json.Marshal(p)
     fmt.Println(string(data))
 }
+```
 
 
-//结果
+
+结果
+
+```
 {"Name":"Xiao mi 6","ProductID":1,"Number":10000,"Price":2499,"IsOnSale":true}
+```
 
-2、
-何为Tag，tag就是标签，给结构体的每个字段打上一个标签，标签冒号前是类型，后面是标签名。
 
+##### 2、何为Tag，tag就是标签，给结构体的每个字段打上一个标签，标签冒号前是类型，后面是标签名。
+
+
+```
 // Product _
 type Product struct {
     Name      string  `json:"name"`
@@ -51,13 +63,19 @@ type Product struct {
     Price     float64 `json:"price"`
     IsOnSale  bool    `json:"is_on_sale,string"`
 }
+```
 
-// 序列化过后，可以看见
-  {"name":"Xiao mi 6","number":10000,"price":2499,"is_on_sale":"false"}
 
-3、
-omitempty，tag里面加上omitempy，可以在序列化的时候忽略0值或者空值
+序列化过后，可以看见
 
+```
+{"name":"Xiao mi 6","number":10000,"price":2499,"is_on_sale":"false"}
+```
+
+##### 3、omitempty，tag里面加上omitempy，可以在序列化的时候忽略0值或者空值
+
+
+```
 package main
 
 import (
@@ -85,12 +103,19 @@ func main() {
     data, _ := json.Marshal(p)
     fmt.Println(string(data))
 }
-// 结果
+```
+
+结果
+
+```
 {"name":"Xiao mi 6","number":10000,"price":2499}
+```
 
-4、
-type，有些时候，我们在序列化或者反序列化的时候，可能结构体类型和需要的类型不一致，这个时候可以指定,支持string,number和boolean
 
+##### 4、type，有些时候，我们在序列化或者反序列化的时候，可能结构体类型和需要的类型不一致，这个时候可以指定,支持string,number和boolean
+
+
+```
 package main
 
 import (
@@ -115,6 +140,11 @@ func main() {
     fmt.Println(err)
     fmt.Println(*p)
 }
-// 结果
+```
+
+结果
+
+```
 <nil>
 {Xiao mi 6 10 10000 2499 true}
+```
